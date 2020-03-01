@@ -1,24 +1,18 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'maven:3-alpine'
+    }
+
+  }
   stages {
     stage('build') {
       steps {
         echo '1123'
-      }
-    }
-
-    stage('TEST') {
-      parallel {
-        stage('TEST') {
-          steps {
-            echo 'test'
-          }
-        }
-
-        stage('report') {
-          steps {
-            echo 'report'
-          }
+        sh 'npm install'
+        timeout(time: 10, activity: true) {
+          sleep 5
+          build(job: 'test', propagate: true, wait: true, quietPeriod: 3)
         }
 
       }
