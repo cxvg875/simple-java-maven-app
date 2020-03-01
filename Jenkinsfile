@@ -1,9 +1,12 @@
 pipeline {
-    agent any
+    agent {
+		image 'maven:3-alpine'
+		arges '-v D:/mylib:/root/.m2'
+	}
     stages {
         stage('Build') { 
             steps {
-                sh 'mvn -B -DskipTests clean package' 
+                bat 'mvn -B -DskipTests clean package' 
             }
         }
     }
